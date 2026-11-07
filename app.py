@@ -2,20 +2,22 @@ from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
 
+# Sunucuda dosya hatası (500) vermemesi için notları hafızada tutuyoruz
+notlar = []
 
-# 1. Ana Karşılama Sayfası
+
 @app.route("/")
 def ana_sayfa():
   return render_template("anasayfa.html")
 
 
-# 2. Araçlar Paneli Sayfası
 @app.route("/araclar")
 def araclar():
-  return render_template("araclar.html")
+  # Hafızadaki notları araraclar.html sayfasına gönderiyoruz
+  return render_template("araclar.html", not_listesi=notlar)
 
 
-# --- Arama ve Yönlendirme Fonksiyonları (Sunucu Uyumlu) ---
+# --- Arama ve Yönlendirme Fonksiyonları (Yeni sekmede açılır) ---
 
 
 @app.route("/ara", methods=["POST"])
@@ -46,7 +48,6 @@ def haritalar():
   return redirect(url)
 
 
-# --- Yeni Eklenen Özellik: Wikipedia / Ansiklopedi ---
 @app.route("/ansiklopedi", methods=["POST"])
 def ansiklopedi():
   soru = request.form.get("kullanici_sorusu")
@@ -54,14 +55,12 @@ def ansiklopedi():
   return redirect(url)
 
 
-# --- Yeni Eklenen Özellik: Hızlı Not Kaydetme (Metin Dosyasına Yazar) ---
+# --- Not Ekleme Özelliği (Hafızada Tutar) ---
 @app.route("/not_ekle", methods=["POST"])
 def not_ekle():
   alinan_not = request.form.get("kullanici_notu")
   if alinan_not:
-    # Sunucuda "notlarim.txt" adında bir dosyaya alt alta kaydeder
-    with open("notlarim.txt", "a", encoding="utf-8") as dosya:
-      dosya.write(alinan_not + "\n")
+    notlar.append(alinan_not)
   return redirect("/araclar")
 
 
