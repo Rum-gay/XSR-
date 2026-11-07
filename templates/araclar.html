@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="english">
+<head>
+    <meta charset="UTF-8">
+    <title>XSR Bot - Araçlar</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; background-color: #030303; color: white; }
+        .box { background: rgba(236, 239, 239, 0.15); padding: 25px; display: inline-block; border-radius: 20px; box-shadow: 0 0 15px rgba(247, 2, 2, 0.5); width: 350px; margin-bottom: 20px; }
+        input[type="text"] { padding: 10px; width: 220px; font-size: 14px; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; font-size: 14px; background-color: #8d158d; color: white; border: none; cursor: pointer; border-radius: 10px; font-weight: bold; }
+        button:hover { background-color: #be0707; }
+        ul { padding-left: 20px; }
+        li { font-size: 14px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Google Arama -->
+    <div class="box">
+        <h2>Web Motoru</h2>
+        <form action="/ara" method="POST" target="_blank">
+            <input type="text" name="kullanici_sorusu" placeholder="Google'da arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+
+    <!-- 2. Görsel Arama -->
+    <div class="box">
+        <h2>Görsel Arama</h2>
+        <form action="/cevapla" method="POST" target="_blank">
+            <input type="text" name="kullanici_sorusu" placeholder="Görsel arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+
+    <!-- 3. Video Arama -->
+    <div class="box">
+        <h2>Video Arama</h2>
+        <form action="/video" method="POST" target="_blank">
+            <input type="text" name="kullanici_sorusu" placeholder="Video arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+
+    <!-- 4. Haritalar -->
+    <div class="box">
+        <h2>Haritalar</h2>
+        <form action="/haritalar" method="POST" target="_blank">
+            <input type="text" name="kullanici_sorusu" placeholder="Konum arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+
+    <!-- 5. Wikipedia -->
+    <div class="box">
+        <h2>Wikipedia</h2>
+        <form action="/ansiklopedi" method="POST" target="_blank">
+            <input type="text" name="kullanici_sorusu" placeholder="Ansiklopedi'de ara" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+
+    <!-- 6. Hızlı Not Defteri -->
+    <div class="box">
+        <h2>Hızlı Not Defteri</h2>
+        <form action="/not_ekle" method="POST">
+            <input type="text" name="kullanici_notu" placeholder="Notunu yaz..." required>
+            <button type="submit">Ekle</button>
+        </form>
+        <ul style="text-align: left; margin-top: 15px;">
+            {% for item in not_listesi %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
