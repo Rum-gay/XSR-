@@ -16,7 +16,7 @@ def araclar():
 def ara():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.google.com/search?q={soru}"
-  webbrowser.open(url)
+  return redirect(url)
   return redirect("/araclar")
 
 
@@ -24,7 +24,7 @@ def ara():
 def cevapla():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.google.com/search?q={soru}&tbm=isch"
-  webbrowser.open(url)
+  return redirect(url)
   return redirect("/araclar")
 
 
@@ -32,7 +32,7 @@ def cevapla():
 def video():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.bing.com/videos?FORM=HDRSC4&q={soru}"
-  webbrowser.open(url)
+  return redirect(url)
   return redirect("/araclar")
 
 
@@ -40,7 +40,7 @@ def video():
 def haritalar():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.bing.com/maps/search?FORM=HDRSC6&style=r&q={soru}"
-  webbrowser.open(url)
+  return redirect(url)
   return redirect("/araclar")
 
 
