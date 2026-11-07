@@ -3,35 +3,26 @@ from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
 
-@app.route("/")
-def ana_sayfa():
-  return render_template("anasayfa.html")
-
-@app.route("/araclar")
-def araclar():
-  return render_template("araclar.html")
-
-
 @app.route("/ara", methods=["POST"])
 def ara():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.google.com/search?q={soru}"
-  return redirect(url)
- 
+  return redirect(url)  # webbrowser yerine direkt yönlendiriyoruz
+
 
 @app.route("/cevapla", methods=["POST"])
 def cevapla():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.google.com/search?q={soru}&tbm=isch"
   return redirect(url)
- 
+
 
 @app.route("/video", methods=["POST"])
 def video():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.bing.com/videos?FORM=HDRSC4&q={soru}"
   return redirect(url)
-  
+
 
 @app.route("/haritalar", methods=["POST"])
 def haritalar():
