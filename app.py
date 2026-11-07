@@ -17,32 +17,28 @@ def ara():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.google.com/search?q={soru}"
   return redirect(url)
-  return redirect("/araclar")
-
+ 
 
 @app.route("/cevapla", methods=["POST"])
 def cevapla():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.google.com/search?q={soru}&tbm=isch"
   return redirect(url)
-  return redirect("/araclar")
-
+ 
 
 @app.route("/video", methods=["POST"])
 def video():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.bing.com/videos?FORM=HDRSC4&q={soru}"
   return redirect(url)
-  return redirect("/araclar")
-
+  
 
 @app.route("/haritalar", methods=["POST"])
 def haritalar():
   soru = request.form.get("kullanici_sorusu")
   url = f"https://www.bing.com/maps/search?FORM=HDRSC6&style=r&q={soru}"
   return redirect(url)
-  return redirect("/araclar")
 
-
+  
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port=5000, debug=True)
