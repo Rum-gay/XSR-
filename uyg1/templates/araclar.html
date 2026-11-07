@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="english">
+<head>
+    <meta charset="UTF-8">
+    <title>XSR Bot 1</title>
+    <style>
+        body { font-family: sans-serif, sans-serif; text-align: center; margin-top: 100px; background-color: #030303; }
+        .box { background: rgba(236, 239, 239, 0.585); padding: 25px; display: inline-block; border-radius: 25px; box-shadow: 0 0 20px rgba(247, 2, 2, 0.979); }
+        input[type="text"] { padding: 10px; width: 250px; font-size: 16px; }
+        button { padding: 15px 30px; font-size: 16px; background-color: #8d158d; color: white; border: none; cursor: pointer; border-radius: 15px; }
+        button:hover { background-color: #be0707; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Web Motoru</h2>
+        <form action="/ara" method="POST">
+            <input type="text" name="kullanici_sorusu" placeholder="Geçerli web motorundan arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+</body>
+    <div class="box" style="margin-top: 15px;">
+        <h2>Görsel Arama</h2>
+        <form action="/cevapla" method="POST">
+            <input type="text" name="kullanici_sorusu" placeholder="görsel arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+</html>
+</body>
+    <div class="box" style="margin-top: 15px;">
+        <h2>Video Arama</h2>
+        <form action="/video" method="POST">
+            <input type="text" name="kullanici_sorusu" placeholder="video arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+</html>
+</body>
+    <div class="box" style="margin-top: 15px;">
+        <h2>Haritalar</h2>
+        <form action="/haritalar" method="POST">
+            <input type="text" name="kullanici_sorusu" placeholder="Konum Arat" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+</html>
+    <div class="box" style="margin-top: 15px;">
+        <h2>Wikipedia Arama</h2>
+        <form action="/ansiklopedi" method="POST">
+            <input type="text" name="kullanici_sorusu" placeholder="Ansiklopedide ara" required>
+            <button type="submit">Ara</button>
+        </form>
+    </div>
+</body>
+    </div>
+        <h1>Geri</h1>
+        <br>
+        <a href="http://127.0.0.1:5000/" class="btn">Geri Dön</a>
+        
