@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}XSR-Bot | Ürün Ara{% endblock %}
+
+{% block content %}
+<section class="panel" style="max-width: 720px; margin: 0 auto;">
+    <p class="eyebrow">Akıllı alışveriş</p>
+    <h1>Ürün ara, fiyatları karşılaştır.</h1>
+    <p class="muted">Ürün adını gir. XSR-Bot mağaza, fiyat ve ürün bağlantılarını listelesin; ortalamanın altındaki sonuçları göstersin.</p>
+    <form action="{{ url_for('urun_ara') }}" method="POST" class="search-form" style="margin-top: 24px;">
+        <input type="text" name="kullanici_sorusu" placeholder="Örn. kablosuz kulaklık..." maxlength="160" autocomplete="off" required autofocus aria-label="Aranacak ürün">
+        <button type="submit">Ürünleri ara</button>
+    </form>
+    <p class="muted" style="font-size: 13px;">Fiyat ve stok bilgileri değişebilir. Satın almadan önce mağaza sayfasını kontrol et.</p>
+</section>
+{% endblock %}

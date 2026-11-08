@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#090910">
+    <title>{% block title %}XSR-Bot{% endblock %}</title>
+    <style>
+        :root { color-scheme: dark; font-family: "Segoe UI", Arial, sans-serif; background: #090910; color: #f7f5fb; }
+        * { box-sizing: border-box; }
+        body { min-height: 100vh; margin: 0; background: radial-gradient(ellipse at 12% 0%, rgba(128, 31, 134, .27), transparent 40%), radial-gradient(ellipse at 90% 80%, rgba(76, 35, 115, .2), transparent 38%), #090910; }
+        a { color: #e8c8ff; }
+        .site-header { width: min(1120px, 94%); margin: 0 auto; padding: 22px 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .brand { display: inline-flex; gap: 10px; align-items: center; color: white; text-decoration: none; font-size: 20px; font-weight: 800; letter-spacing: .5px; }
+        .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; background: linear-gradient(135deg, #a623a7, #55207e); box-shadow: 0 0 18px rgba(166, 35, 167, .4); }
+        .nav { display: flex; flex-wrap: wrap; gap: 10px; }
+        .nav a { color: #ded8e8; text-decoration: none; padding: 9px 13px; border-radius: 9px; }
+        .nav a:hover, .nav a:focus-visible { background: rgba(255,255,255,.1); color: white; }
+        .personal-greeting { color: #d3b2ff; padding: 9px 4px; font-size: 13px; }
+        .price-ticker { width: 100%; overflow: hidden; border-top: 1px solid rgba(255,255,255,.08); border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(12, 11, 18, .8); }
+        .ticker-inner { width: min(1120px, 94%); min-height: 48px; margin: 0 auto; display: flex; align-items: center; gap: 15px; }
+        .ticker-label { color: #d3b2ff; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; white-space: nowrap; }
+        .ticker-window { flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 2%, #000 98%, transparent); }
+        .ticker-track { display: flex; width: max-content; animation: ticker-scroll 38s linear infinite; }
+        .ticker-group { display: flex; align-items: center; gap: 28px; padding-right: 28px; white-space: nowrap; }
+        .ticker-group a { color: #f5eaff; text-decoration: none; font-size: 13px; }
+        .ticker-group a:hover, .ticker-group a:focus-visible { text-decoration: underline; }
+        .ticker-group .ticker-price { color: #9af4ae; font-weight: 800; }
+        .ticker-empty, .ticker-query, .ticker-source { color: #c5bfce; font-size: 13px; }
+        .ticker-toggle { flex: 0 0 auto; padding: 7px 10px; color: #eee; background: #383542; font-size: 12px; }
+        .ticker-toggle:hover { background: #4a4655; }
+        .ticker-track.is-paused { animation-play-state: paused; }
+        [hidden] { display: none !important; }
+        @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        main { width: min(1120px, 94%); margin: 26px auto 70px; }
+        .panel { background: rgba(25, 24, 34, .88); border: 1px solid rgba(255,255,255,.09); border-radius: 20px; padding: clamp(22px, 5vw, 42px); box-shadow: 0 20px 70px rgba(0,0,0,.32); }
+        .hero { text-align: center; padding-top: clamp(38px, 8vw, 74px); padding-bottom: clamp(38px, 8vw, 74px); }
+        h1, h2, h3 { margin-top: 0; }
+        h1 { font-size: clamp(30px, 6vw, 48px); margin-bottom: 12px; }
+        h2 { font-size: clamp(22px, 4vw, 30px); }
+        p { line-height: 1.65; }
+        .muted { color: #c5bfce; }
+        .eyebrow { color: #dda7fa; text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px; font-weight: 800; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 16px; }
+        .card { padding: 22px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); border-radius: 15px; }
+        .card h2, .card h3 { margin-bottom: 10px; }
+        .btn, button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border: 0; border-radius: 10px; color: white; background: #8d158d; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: background .15s ease, transform .15s ease; }
+        .btn:hover, button:hover { background: #aa27ad; transform: translateY(-1px); }
+        .btn.secondary { background: #383542; }
+        .btn.secondary:hover { background: #4a4655; }
+        .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 24px; }
+        .search-form { display: flex; flex-wrap: wrap; gap: 9px; }
+        input[type="text"] { min-width: 0; flex: 1 1 190px; width: 100%; padding: 12px 14px; border: 1px solid #494451; border-radius: 9px; background: #13121a; color: white; font: inherit; }
+        input[type="text"]:focus { outline: 2px solid #b252ce; outline-offset: 1px; }
+        .status, .message { display: block; padding: 11px 14px; border-radius: 10px; background: rgba(255,255,255,.07); }
+        .status.ready { color: #a7f3b5; background: rgba(30,150,70,.18); }
+        .status.missing { color: #ffe09a; background: rgba(200,150,30,.16); }
+        .results { list-style: none; padding: 0; }
+        .results li { padding: 15px; margin: 10px 0; border-radius: 11px; background: rgba(255,255,255,.05); }
+        .local-notes .results li { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .note-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+        .note-delete { flex: 0 0 auto; padding: 6px 9px; background: #383542; font-size: 12px; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+        .product-link { color: #f5eaff; }
+        .source { color: #d3b2ff; font-size: 13px; }
+        .price { color: #9af4ae; font-weight: 800; white-space: nowrap; }
+        .site-footer { width: min(1120px, 94%); margin: -42px auto 0; padding: 0 0 24px; text-align: center; color: #918a9c; font-size: 13px; }
+        @media (max-width: 600px) {
+            .site-header { align-items: flex-start; flex-direction: column; }
+            .nav { width: 100%; }
+            .nav a { padding-left: 0; padding-right: 12px; }
+            .search-form button { width: 100%; }
+            .ticker-inner { gap: 8px; }
+            .ticker-label { max-width: 72px; line-height: 1.3; }
+            .ticker-toggle { padding: 7px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+            .ticker-window { overflow-x: auto; mask-image: none; }
+            .ticker-track { animation: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="{{ url_for('ana_sayfa') }}"><span class="brand-mark">X</span><span>XSR-Bot</span></a>
+        <nav class="nav" aria-label="Ana menü">
+            <a href="{{ url_for('ana_sayfa') }}">Ana Sayfa</a>
+            <a href="{{ url_for('urun_arama_sayfasi') }}">Ürün Ara</a>
+            <a href="{{ url_for('araclar') }}">Araçlar</a>
+            <span class="personal-greeting" id="personalGreeting" aria-live="polite"></span>
+        </nav>
+    </header>
+    <section class="price-ticker" aria-label="Bu tarayıcıdaki son ürün aramalarınız">
+        <div class="ticker-inner">
+            <span class="ticker-label">Senin fiyat akışın</span>
+            <div class="ticker-window">
+                <div class="ticker-track" id="priceTickerTrack">
+                    <div class="ticker-group"><span class="ticker-empty">Arama yaptığında, bulduğun ürünler ve mağaza fiyatları burada görünür.</span></div>
+                </div>
+            </div>
+            <button type="button" class="ticker-toggle" id="tickerToggle" aria-pressed="false">Durdur</button>
+        </div>
+    </section>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">XSR-Bot · Üçüncü taraf arama sonuçları ilgili servislerden sağlanır.</footer>
+    <script>
+        (() => {
+            const feedKey = "xsrbot.priceFeed.v1";
+            const nameKey = "xsrbot.displayName.v1";
+            const notesKey = "xsrbot.notes.v1";
+            const track = document.getElementById("priceTickerTrack");
+            const greeting = document.getElementById("personalGreeting");
+            const toggle = document.getElementById("tickerToggle");
+            const latestFeed = {{ ticker_feed|default(none)|tojson }};
+
+            function readStored(key) {
+                try {
+                    return localStorage.getItem(key);
+                } catch {
+                    return null;
+                }
+            }
+
+            function writeStored(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+
+            function showGreeting() {
+                const name = readStored(nameKey);
+                greeting.textContent = name ? `Merhaba, ${name}` : "";
+                const welcome = document.getElementById("welcomeHeading");
+                if (welcome) {
+                    welcome.textContent = name ? `Hoş geldin, ${name}.` : "Merak ettiğini bul.";
+                }
+                const nameInput = document.getElementById("displayName");
+                if (nameInput && name) {
+                    nameInput.value = name;
+                }
+            }
+
+            function createGroup(feed) {
+                const group = document.createElement("div");
+                group.className = "ticker-group";
+                const query = document.createElement("span");
+                query.className = "ticker-query";
+                let updatedAt = "son arama";
+                if (feed.searchedAt) {
+                    const parsedDate = new Date(feed.searchedAt);
+                    if (!Number.isNaN(parsedDate.valueOf())) {
+                        updatedAt = `son arama ${parsedDate.toLocaleString("tr-TR")}`;
+                    }
+                }
+                query.textContent = `“${feed.query}” · ${updatedAt}`;
+                group.append(query);
+
+                feed.items.forEach((item) => {
+                    if (!item || typeof item.title !== "string" || typeof item.price !== "string") {
+                        return;
+                    }
+                    const link = document.createElement("a");
+                    link.className = "ticker-item";
+                    link.textContent = item.title;
+                    try {
+                        const url = new URL(item.link);
+                        if (url.protocol !== "https:" && url.protocol !== "http:") {
+                            return;
+                        }
+                        link.href = url.href;
+                    } catch {
+                        return;
+                    }
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+
+                    const price = document.createElement("span");
+                    price.className = "ticker-price";
+                    price.textContent = item.price;
+                    link.append(" · ", price);
+
+                    const source = document.createElement("span");
+                    source.className = "ticker-source";
+                    source.textContent = ` · ${item.source || "Mağaza"}`;
+                    link.append(source);
+                    group.append(link);
+                });
+                return group;
+            }
+
+            function showFeed(feed) {
+                track.replaceChildren();
+                if (!feed || typeof feed.query !== "string" || !Array.isArray(feed.items) || !feed.items.length) {
+                    const message = document.createElement("span");
+                    message.className = "ticker-empty";
+                    message.textContent = "Arama yaptığında, bulduğun ürünler ve mağaza fiyatları burada görünür.";
+                    const group = document.createElement("div");
+                    group.className = "ticker-group";
+                    group.append(message);
+                    track.append(group);
+                    track.classList.add("is-paused");
+                    toggle.hidden = true;
+                    return;
+                }
+
+                const first = createGroup(feed);
+                track.append(first, first.cloneNode(true));
+                track.classList.remove("is-paused");
+                toggle.hidden = false;
+            }
+
+            function readNotes() {
+                try {
+                    const notes = JSON.parse(readStored(notesKey) || "[]");
+                    return Array.isArray(notes) ? notes.filter((note) => typeof note === "string").slice(0, 20) : [];
+                } catch {
+                    return [];
+                }
+            }
+
+            function saveNotes(notes) {
+                writeStored(notesKey, JSON.stringify(notes.slice(0, 20)));
+                renderNotes();
+            }
+
+            function renderNotes() {
+                const list = document.getElementById("notesList");
+                const empty = document.getElementById("emptyNotes");
+                if (!list || !empty) {
+                    return;
+                }
+                const notes = readNotes();
+                list.replaceChildren();
+                empty.hidden = notes.length > 0;
+                notes.forEach((note, index) => {
+                    const item = document.createElement("li");
+                    const text = document.createElement("span");
+                    text.className = "note-text";
+                    text.textContent = note;
+                    const remove = document.createElement("button");
+                    remove.type = "button";
+                    remove.className = "note-delete";
+                    remove.textContent = "Sil";
+                    remove.setAttribute("aria-label", `Notu sil: ${note.slice(0, 50)}`);
+                    remove.addEventListener("click", () => {
+                        const nextNotes = readNotes();
+                        nextNotes.splice(index, 1);
+                        saveNotes(nextNotes);
+                    });
+                    item.append(text, remove);
+                    list.append(item);
+                });
+            }
+
+            if (latestFeed && latestFeed.items && latestFeed.items.length) {
+                latestFeed.searchedAt = new Date().toISOString();
+                writeStored(feedKey, JSON.stringify(latestFeed));
+            }
+            showGreeting();
+            renderNotes();
+
+            let storedFeed = null;
+            try {
+                storedFeed = JSON.parse(readStored(feedKey) || "null");
+            } catch {
+                try {
+                    localStorage.removeItem(feedKey);
+                } catch {
+                    storedFeed = null;
+                }
+            }
+            showFeed(storedFeed);
+
+            const profileForm = document.getElementById("profileForm");
+            if (profileForm) {
+                profileForm.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    const input = document.getElementById("displayName");
+                    const name = input.value.trim().slice(0, 32);
+                    if (name) {
+                        writeStored(nameKey, name);
+                    } else {
+                        try {
+                            localStorage.removeItem(nameKey);
+                        } catch {
+                            greeting.textContent = "";
+                        }
+                    }
+                    showGreeting();
+                });
+            }
+
+            const clearButton = document.getElementById("clearPersonalData");
+            if (clearButton) {
+                clearButton.addEventListener("click", () => {
+                    try {
+                        localStorage.removeItem(nameKey);
+                        localStorage.removeItem(feedKey);
+                        localStorage.removeItem(notesKey);
+                    } catch {
+                        greeting.textContent = "";
+                    }
+                    showGreeting();
+                    showFeed(null);
+                    renderNotes();
+                    const nameInput = document.getElementById("displayName");
+                    if (nameInput) {
+                        nameInput.value = "";
+                    }
+                });
+            }
+
+            const noteInput = document.getElementById("noteInput");
+            const addNote = document.getElementById("addNote");
+            if (noteInput && addNote) {
+                const addCurrentNote = () => {
+                    const note = noteInput.value.trim().slice(0, 500);
+                    if (!note) {
+                        return;
+                    }
+                    saveNotes([note, ...readNotes()]);
+                    noteInput.value = "";
+                    noteInput.focus();
+                };
+                addNote.addEventListener("click", addCurrentNote);
+                noteInput.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        addCurrentNote();
+                    }
+                });
+            }
+
+            toggle.addEventListener("click", () => {
+                const paused = track.classList.toggle("is-paused");
+                toggle.textContent = paused ? "Oynat" : "Durdur";
+                toggle.setAttribute("aria-pressed", String(paused));
+            });
+        })();
+    </script>
+</body>
+</html>
