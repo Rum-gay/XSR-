@@ -55,6 +55,15 @@ def assistant_template_config():
   }
 
 
+@app.route("/api/health")
+def api_health():
+  return jsonify({
+    "ok": True,
+    "assistant_enabled": bool(os.environ.get("GEMINI_API_KEY")),
+    "model": os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+  })
+
+
 def _ai_request_limit_reached(session_id):
   global _ai_usage_date, _ai_daily_requests
   now = monotonic()
