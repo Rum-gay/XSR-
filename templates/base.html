@@ -435,9 +435,9 @@
                     }
                 } else {
                     const routeHint = response.status === 404
-                        ? " API rotası bulunamadı; Render'daki son dağıtımın tamamlandığını kontrol edin."
-                        : " Sunucu hatası için Render loglarını kontrol edin.";
-                    throw new Error(`Sunucu JSON yerine HTML döndürdü (HTTP ${response.status}).${routeHint}`);
+                        ? " API rotası bulunamadı. Render dağıtımını kontrol edin."
+                        : " API sunucusu JSON hata yanıtı vermedi. Render Logs'ta bu isteğin traceback'ini kontrol edin.";
+                    throw new Error(`Sunucu JSON yerine HTML döndürdü (HTTP ${response.status}, ${response.url}).${routeHint} Dağıtımı doğrulamak için /api/health adresini açın.`);
                 }
 
                 if (!response.ok) {
