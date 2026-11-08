@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}XSR-Bot | Arama Araçları{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Keşfet</p>
+    <h1>Arama araçları</h1>
+    <p class="muted">Bir konu yaz, kullanmak istediğin arama aracını seç. Sonuçlar yeni sekmede açılır.</p>
+
+    <div class="grid" style="margin-top: 24px;">
+        <article class="card">
+            <h2>Web araması</h2>
+            <form action="{{ url_for('ara') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="Web'de ara..." maxlength="200" required>
+                <button type="submit">Google'da ara</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>Görsel arama</h2>
+            <form action="{{ url_for('cevapla') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="Görsel ara..." maxlength="200" required>
+                <button type="submit">Görsel bul</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>Video arama</h2>
+            <form action="{{ url_for('video') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="Video ara..." maxlength="200" required>
+                <button type="submit">Bing'de ara</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>YouTube</h2>
+            <form action="{{ url_for('youtube') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="YouTube'da ara..." maxlength="200" required>
+                <button type="submit">YouTube'da ara</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>Harita</h2>
+            <form action="{{ url_for('haritalar') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="Adres veya konum..." maxlength="200" required>
+                <button type="submit">Konumu bul</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>Haberler</h2>
+            <form action="{{ url_for('haberler') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="Haber konusu..." maxlength="200" required>
+                <button type="submit">Haber ara</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>Wikipedia</h2>
+            <form action="{{ url_for('ansiklopedi') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="Ansiklopedide ara..." maxlength="200" required>
+                <button type="submit">Wikipedia'da ara</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>Çeviri</h2>
+            <form action="{{ url_for('ceviri') }}" method="POST" target="_blank" class="search-form">
+                <input type="text" name="kullanici_sorusu" placeholder="Çevrilecek metin..." maxlength="500" required>
+                <button type="submit">Türkçeye çevir</button>
+            </form>
+        </article>
+        <article class="card">
+            <h2>Fiyat karşılaştırma</h2>
+            <p class="muted">Farklı mağazalardaki ürün tekliflerini, fiyatları ve mağaza bağlantılarını karşılaştır.</p>
+            <a href="{{ url_for('urun_arama_sayfasi') }}" class="btn">Ürün ara</a>
+        </article>
+    </div>
+</section>
+
+<section class="panel" style="margin-top: 20px;">
+    <h2>Hızlı not defteri</h2>
+    <p class="muted">Notların yalnızca bu tarayıcıda saklanır; başka ziyaretçiler göremez.</p>
+    <div id="localNotes" class="local-notes" aria-live="polite">
+        <p class="muted" id="emptyNotes">Henüz not eklenmedi.</p>
+        <ul class="results" id="notesList"></ul>
+    </div>
+    <div class="search-form">
+        <label for="noteInput" class="sr-only">Kısa not</label>
+        <input id="noteInput" type="text" placeholder="Kısa bir not yaz..." maxlength="500" autocomplete="off">
+        <button id="addNote" type="button">Not ekle</button>
+    </div>
+</section>
+{% endblock %}
